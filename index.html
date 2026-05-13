@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Truco Binario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+- { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+background: #080808 !important;
+font-family: ‘Courier Prime’, ‘Courier New’, Courier, monospace;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+min-height: 100vh;
+padding: 40px 20px 60px;
+}
+
+/* ── HEADER ── */
+header {
+text-align: center;
+margin-bottom: 50px;
+}
+header h1 {
+font-family: ‘Cinzel’, Georgia, serif;
+font-size: 24px;
+letter-spacing: 6px;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+text-shadow: 0 0 20px rgba(0,232,56,0.35);
+margin-bottom: 8px;
+}
+header p {
+color: #00a828 !important;
+-webkit-text-fill-color: #00a828 !important;
+font-size: 13px;
+letter-spacing: 3px;
+}
+.line-dec {
+width: 200px;
+height: 1px;
+background: linear-gradient(90deg, transparent, #00e838, transparent);
+margin: 14px auto;
+}
+
+/* ── VERIFICADOR ── */
+.verificador {
+max-width: 520px;
+margin: 0 auto 50px;
+background: #0d0d0d !important;
+border: 1px solid #1c3a1c;
+border-radius: 10px;
+padding: 24px 24px 20px;
+position: relative;
+}
+.verificador-label {
+display: block;
+font-size: 10px;
+letter-spacing: 3px;
+color: #00a828 !important;
+-webkit-text-fill-color: #00a828 !important;
+margin-bottom: 14px;
+}
+.ver-row {
+display: -webkit-flex;
+display: flex;
+gap: 10px;
+-webkit-align-items: center;
+align-items: center;
+-webkit-flex-wrap: wrap;
+flex-wrap: wrap;
+}
+.ver-row input {
+-webkit-appearance: none;
+appearance: none;
+background: #111111 !important;
+border: 1px solid #2a5a2a;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+font-family: ‘Courier Prime’, ‘Courier New’, Courier, monospace;
+font-size: 22px;
+padding: 8px 14px;
+width: 110px;
+border-radius: 6px;
+outline: none;
+text-align: center;
+}
+.ver-row input:focus {
+border-color: #00e838;
+box-shadow: 0 0 10px rgba(0,232,56,0.35);
+}
+.ver-row button {
+-webkit-appearance: none;
+appearance: none;
+background: #0d0d0d !important;
+border: 1px solid #00e838;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+font-family: ‘Courier Prime’, ‘Courier New’, Courier, monospace;
+font-size: 13px;
+letter-spacing: 2px;
+padding: 10px 18px;
+border-radius: 6px;
+cursor: pointer;
+}
+.ver-row button:active {
+background: rgba(0,232,56,0.15) !important;
+}
+#resultado {
+margin-top: 14px;
+font-size: 13px;
+color: #00a828 !important;
+-webkit-text-fill-color: #00a828 !important;
+letter-spacing: 1px;
+min-height: 20px;
+line-height: 1.8;
+}
+
+/* ── GRID DE TARJETAS ── */
+.grid-tarjetas {
+display: -webkit-flex;
+display: flex;
+-webkit-flex-wrap: wrap;
+flex-wrap: wrap;
+gap: 24px;
+max-width: 1100px;
+margin: 0 auto;
+-webkit-justify-content: center;
+justify-content: center;
+}
+
+/* ── TARJETA ── */
+.tarjeta {
+background: #0d0d0d !important;
+border: 1px solid #1c3a1c;
+border-radius: 12px;
+overflow: hidden;
+width: 320px;
+-webkit-flex: 0 0 320px;
+flex: 0 0 320px;
+}
+@media (max-width: 360px) {
+.tarjeta { width: 100%; -webkit-flex: 0 0 100%; flex: 0 0 100%; }
+}
+.tarjeta.activa {
+border-color: #00e838 !important;
+box-shadow: 0 0 24px rgba(0,232,56,0.3);
+}
+.tarjeta.activa .cab {
+background: rgba(0,232,56,0.07) !important;
+}
+
+/* Cabecera */
+.cab {
+display: -webkit-flex;
+display: flex;
+-webkit-justify-content: space-between;
+justify-content: space-between;
+-webkit-align-items: center;
+align-items: center;
+padding: 12px 16px;
+border-bottom: 1px solid #1c3a1c;
+background: #0f0f0f !important;
+}
+.cab-izq {
+display: -webkit-flex;
+display: flex;
+-webkit-align-items: baseline;
+align-items: baseline;
+gap: 8px;
+}
+.cab-num {
+font-family: ‘Cinzel’, Georgia, serif;
+font-size: 22px;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+text-shadow: 0 0 10px rgba(0,232,56,0.3);
+}
+.cab-label {
+font-size: 10px;
+color: #00a828 !important;
+-webkit-text-fill-color: #00a828 !important;
+letter-spacing: 2px;
+}
+.cab-der { text-align: right; }
+.cab-bit {
+font-size: 11px;
+color: #00a828 !important;
+-webkit-text-fill-color: #00a828 !important;
+letter-spacing: 1px;
+}
+.cab-valor {
+font-size: 18px;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+}
+
+/* Bits visuales */
+.bits-visual {
+display: -webkit-flex;
+display: flex;
+-webkit-justify-content: center;
+justify-content: center;
+gap: 3px;
+padding: 8px 16px 0;
+}
+.bit-box {
+width: 22px;
+height: 22px;
+border: 1px solid #1a3a1a;
+border-radius: 4px;
+display: -webkit-flex;
+display: flex;
+-webkit-align-items: center;
+align-items: center;
+-webkit-justify-content: center;
+justify-content: center;
+font-size: 10px;
+color: #1a4a1a !important;
+-webkit-text-fill-color: #1a4a1a !important;
+background: #0a0a0a !important;
+}
+.bit-box.on {
+border-color: #00e838 !important;
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+background: rgba(0,232,56,0.12) !important;
+box-shadow: 0 0 6px rgba(0,232,56,0.3);
+}
+
+/* Números */
+.nums-wrap {
+padding: 10px 12px 14px;
+max-height: 200px;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+}
+.nums-grid {
+display: -webkit-flex;
+display: flex;
+-webkit-flex-wrap: wrap;
+flex-wrap: wrap;
+}
+.n {
+width: 12.5%;
+font-size: 13px;
+text-align: center;
+padding: 3px 1px;
+color: #00b828 !important;
+-webkit-text-fill-color: #00b828 !important;
+border-radius: 3px;
+}
+.n.primero {
+color: #00e838 !important;
+-webkit-text-fill-color: #00e838 !important;
+font-weight: bold;
+font-size: 15px;
+text-shadow: 0 0 8px rgba(0,232,56,0.3);
+}
+.n.resaltado {
+background: rgba(0,232,56,0.2) !important;
+color: #ffffff !important;
+-webkit-text-fill-color: #ffffff !important;
+box-shadow: 0 0 6px rgba(0,232,56,0.3);
+}
+
+/* Footer tarjeta */
+.cab-footer {
+padding: 6px 16px 10px;
+font-size: 10px;
+color: #1a4a1a !important;
+-webkit-text-fill-color: #1a4a1a !important;
+letter-spacing: 1px;
+border-top: 1px solid #0f250f;
+text-align: center;
+background: #0d0d0d !important;
+}
+
+/* Colores inline para JS */
+.c-verde  { color: #00e838 !important; -webkit-text-fill-color: #00e838 !important; font-weight: bold; }
+.c-error  { color: #cc3300 !important; -webkit-text-fill-color: #cc3300 !important; }
+.c-dim    { color: #00a828 !important; -webkit-text-fill-color: #00a828 !important; }
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>EL TRUCO BINARIO</h1>
+  <div class="line-dec"></div>
+  <p>10 TARJETAS &middot; 1 A 1023 &middot; SISTEMA BASE 2</p>
+</header>
+
+<div class="verificador">
+  <span class="verificador-label">ADIVINA EL N&Uacute;MERO</span>
+  <div class="ver-row">
+    <input type="number" id="inp" min="1" max="1023" placeholder="???" />
+    <button onclick="verificar()">ADIVINAR</button>
+    <button onclick="limpiar()">LIMPIAR</button>
+  </div>
+  <div id="resultado"></div>
+</div>
+
+<div class="grid-tarjetas" id="tarjetas"></div>
+
+<script>
+var TARJETAS = (function(){
+  var t = [];
+  for(var k = 0; k < 10; k++){
+    var valor = Math.pow(2, k);
+    var nums = [];
+    for(var n = 1; n <= 1023; n++) if(n & valor) nums.push(n);
+    t.push({ id: k+1, bit: k, valor: valor, nums: nums });
+  }
+  return t;
+})();
+
+function renderTarjetas(resaltado){
+  var cont = document.getElementById('tarjetas');
+  cont.innerHTML = '';
+
+  TARJETAS.forEach(function(t){
+    var activa = (resaltado !== undefined) && (resaltado & t.valor);
+    var div = document.createElement('div');
+    div.className = 'tarjeta' + (activa ? ' activa' : '');
+    div.id = 'tarjeta-' + t.id;
+
+    // Bits visuales
+    var bitsHtml = '<div class="bits-visual">';
+    for(var b = 9; b >= 0; b--){
+      var onClass = (b === t.bit) ? ' on' : '';
+      bitsHtml += '<div class="bit-box' + onClass + '">' + (b === t.bit ? '1' : '0') + '</div>';
+    }
+    bitsHtml += '</div>';
+
+    // Números
+    var numsHtml = '<div class="nums-wrap"><div class="nums-grid">';
+    for(var i = 0; i < t.nums.length; i++){
+      var n = t.nums[i];
+      var cls = 'n';
+      if(i === 0) cls += ' primero';
+      if(resaltado !== undefined && n === resaltado) cls += ' resaltado';
+      numsHtml += '<div class="' + cls + '">' + n + '</div>';
+    }
+    numsHtml += '</div></div>';
+
+    div.innerHTML =
+      '<div class="cab">' +
+        '<div class="cab-izq">' +
+          '<span class="cab-num">T' + t.id + '</span>' +
+          '<span class="cab-label">TARJETA ' + t.id + '</span>' +
+        '</div>' +
+        '<div class="cab-der">' +
+          '<div class="cab-bit">BIT ' + t.bit + ' &middot; 2<sup>' + t.bit + '</sup></div>' +
+          '<div class="cab-valor">' + t.valor + '</div>' +
+        '</div>' +
+      '</div>' +
+      bitsHtml +
+      numsHtml +
+      '<div class="cab-footer">' + t.nums.length + ' n\u00fameros &middot; primer valor: ' + t.nums[0] + '</div>';
+
+    cont.appendChild(div);
+  });
+}
+
+function verificar(){
+  var val = parseInt(document.getElementById('inp').value, 10);
+  var res = document.getElementById('resultado');
+
+  if(isNaN(val) || val < 1 || val > 1023){
+    res.innerHTML = '<span class="c-error">Ingresa un n\u00famero entre 1 y 1023</span>';
+    renderTarjetas(undefined);
+    return;
+  }
+
+  var tarjetasActivas = [];
+  var suma = 0;
+  for(var k = 0; k < 10; k++){
+    if(val & Math.pow(2, k)){
+      tarjetasActivas.push(k + 1);
+      suma += Math.pow(2, k);
+    }
+  }
+
+  var binario = val.toString(2);
+  while(binario.length < 10) binario = '0' + binario;
+
+  var partes = tarjetasActivas.map(function(t){ return Math.pow(2, t-1); });
+
+  res.innerHTML =
+    '<span class="c-dim">Aparece en tarjetas: </span><span class="c-verde">' +
+    tarjetasActivas.map(function(t){ return 'T' + t; }).join(', ') + '</span><br>' +
+    '<span class="c-dim">Binario: </span><span class="c-verde">' + binario + '</span><br>' +
+    '<span class="c-dim">Suma: </span><span class="c-verde">' + partes.join(' + ') + ' = ' + suma + '</span>';
+
+  renderTarjetas(val);
+
+  var primera = document.getElementById('tarjeta-' + tarjetasActivas[0]);
+  if(primera) primera.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function limpiar(){
+  document.getElementById('inp').value = '';
+  document.getElementById('resultado').innerHTML = '';
+  renderTarjetas(undefined);
+}
+
+document.getElementById('inp').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') verificar();
+});
+
+renderTarjetas(undefined);
+</script>
+
+</body>
+</html>
